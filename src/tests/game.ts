@@ -1,8 +1,8 @@
-import { Deck } from '../controllers/game/deck';
-//import { Player } from '../controllers/game/player';
+import { Deck, Player } from '../controllers/game';
 
 const deck = new Deck();
-//const alegz = new Player('Alegz', deck.drawHand());
+const alegz = new Player('Alegz', deck.drawHand());
 const firstCard = deck.drawFirstCard();
 
+console.log(alegz);
 console.log(firstCard);
