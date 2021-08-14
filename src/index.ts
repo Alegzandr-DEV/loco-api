@@ -14,12 +14,12 @@ const port = 9000;
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
   cors: {
-    origin: 'http://127.0.0.1:5500',
+    origin: 'http://localhost:3000',
     methods: ['GET', 'POST']
   }
 });
 
-app.use(cors());
+app.use(cors({ origin: 'http://localhost:3000', optionsSuccessStatus: 200 }));
 app.use(helmet());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
