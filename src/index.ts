@@ -7,7 +7,7 @@ import { Server, Socket } from 'socket.io';
 import { connect } from 'mongoose';
 import * as routes from './routes';
 
-dotenv.config()
+dotenv.config();
 
 const app = express();
 const port = 9000;

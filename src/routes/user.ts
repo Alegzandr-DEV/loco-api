@@ -22,5 +22,9 @@ export const user = {
     app.get('/user', (req: Request, res: Response) => {
       User.list(req, res);
     });
+
+    app.post('/login', (req: Request, res: Response) => {
+      User.login(req, res);
+    });
   }
 };
