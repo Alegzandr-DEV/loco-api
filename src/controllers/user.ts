@@ -2,8 +2,7 @@ import { Request, Response } from 'express';
 import dotenv from 'dotenv';
 import * as jwt from 'jsonwebtoken';
 import { UserModel } from '../models/user';
-import { compare, signAccess, signRefresh } from '../utils';
-import { user } from '../routes';
+import { create, get, update, remove, list, compare, signAccess, signRefresh } from '../utils';
 
 dotenv.config();
 
@@ -11,42 +10,15 @@ const unauthorized = { success: false, message: 'Unauthorized' };
 const notFound = { success: false, message: 'Not Found' };
 
 export const User = {
-  create: (req: Request, res: Response) => {
-    if (!req.body) return res.status(500).json({ success: false });;
-    new UserModel(req.body).save((err) => {
-      if (err) return res.status(500).json({ success: false });;
-      return res.status(200).json({ success: true });;
-    });
-  },
+  create: create(UserModel),
 
-  get: (req: Request, res: Response) => {
-    UserModel.findById(req.params.id, (err: Error, data: any) => {
-      if (err) return res.status(500).json({ success: false });;
-      if (!data) return res.status(404).json(notFound);
-      return res.status(200).json(data);
-    });
-  },
+  get: get(UserModel),
 
-  update: (req: Request, res: Response) => {
-    UserModel.findByIdAndUpdate(req.params.id, req.body, (err) => {
-      if (err) return res.status(500).json({ success: false });;
-      return res.status(200).json({ success: true });;
-    });
-  },
+  update: update(UserModel),
 
-  delete: (req: Request, res: Response) => {
-    UserModel.findByIdAndDelete(req.params.id, {}, (err) => {
-      if (err) return res.status(500).json({ success: false });;
-      return res.status(200).json({ success: true });;
-    });
-  },
+  delete: remove(UserModel),
 
-  list: (req: Request, res: Response) => {
-    UserModel.find({}, (err: Error, data: any) => {
-      if (err) return res.status(500).json({ success: false });;
-      return res.json(data);
-    });
-  },
+  list: list(UserModel),
 
   login: (req: Request, res: Response) => {
     if (!req.body || !req.body.password) return res.status(500).json({ success: false });;
