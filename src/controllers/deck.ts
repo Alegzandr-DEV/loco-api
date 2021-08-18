@@ -1,4 +1,4 @@
-import { shuffle } from './shuffle';
+import { shuffle } from '../utils';
 import { createDeck } from './createDeck';
 import { Characteristics } from './types';
 

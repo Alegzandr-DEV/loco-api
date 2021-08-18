@@ -7,17 +7,12 @@ import { create, get, update, remove, list, compare, signAccess, signRefresh } f
 dotenv.config();
 
 const unauthorized = { success: false, message: 'Unauthorized' };
-const notFound = { success: false, message: 'Not Found' };
 
 export const User = {
   create: create(UserModel),
-
   get: get(UserModel),
-
   update: update(UserModel),
-
   delete: remove(UserModel),
-
   list: list(UserModel),
 
   login: (req: Request, res: Response) => {
@@ -25,6 +20,7 @@ export const User = {
 
     let userData: { username?: string, email?: string } = { username: req.body.username };
     const isEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+
     if (isEmail.test(req.body.username))
       userData = { email: req.body.username };
 
@@ -32,17 +28,9 @@ export const User = {
       if (err || !data)
         return res.status(500).json({ success: false });;
       if (compare(req.body.password, data.password))  {
-        const accessToken = signAccess({
-          id: data._id,
-          avatar: data.avatar,
-          email: data.email,
-          roles: data.roles,
-          username: data.username
-        });
+        const accessToken = signAccess(data);
+        const refreshToken = signRefresh(data);
 
-        const refreshToken = signRefresh({ 
-          id: data._id 
-        });
         data.refreshToken = refreshToken;
         data.save();
 
@@ -64,19 +52,8 @@ export const User = {
 
       if (user)
         UserModel.findById(user.id, (err: Error, data: any) => {
-          if (data.refreshToken === token) {
-            if (user) {
-              const refreshedToken = signAccess({
-                id: data._id,
-                avatar: data.avatar,
-                email: data.email,
-                roles: data.roles,
-                username: data.username
-              });
-
-              return res.status(200).json({ success: true, accessToken: refreshedToken });
-            }
-          }
+          if (data.refreshToken === token)
+            if (user) return res.status(200).json({ success: true, accessToken: signAccess(data) });
 
           return res.status(401).json(unauthorized);
         });
