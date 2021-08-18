@@ -66,9 +66,13 @@ export const User = {
         UserModel.findById(user.id, (err: Error, data: any) => {
           if (data.refreshToken === token) {
             if (user) {
-              delete user.iat;
-              delete user.exp;
-              const refreshedToken = signAccess(user);
+              const refreshedToken = signAccess({
+                id: data._id,
+                avatar: data.avatar,
+                email: data.email,
+                roles: data.roles,
+                username: data.username
+              });
 
               return res.status(200).json({ success: true, accessToken: refreshedToken });
             }
