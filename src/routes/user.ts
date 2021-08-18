@@ -1,30 +1,35 @@
 import { Application, Request, Response } from 'express';
 import { User } from '../controllers';
+import { auth } from '../middlewares';
 
 export const user = {
   router: function(app: Application) {
-    app.get('/user/:id', (req: Request, res: Response) => {
+    app.get('/users/:id', auth, (req: Request, res: Response) => {
       User.get(req, res);
     });
 
-    app.post('/user', (req: Request, res: Response) => {
+    app.post('/users', (req: Request, res: Response) => {
       User.create(req, res);
     });
 
-    app.put('/user/:id', (req: Request, res: Response) => {
+    app.put('/users/:id', auth, (req: Request, res: Response) => {
       User.update(req, res);
     });
 
-    app.delete('/user/:id', (req: Request, res: Response) => {
+    app.delete('/users/:id', auth, (req: Request, res: Response) => {
       User.delete(req, res);
     });
 
-    app.get('/user', (req: Request, res: Response) => {
+    app.get('/users', auth, (req: Request, res: Response) => {
       User.list(req, res);
     });
 
-    app.post('/login', (req: Request, res: Response) => {
+    app.post('/auth/login', (req: Request, res: Response) => {
       User.login(req, res);
+    });
+
+    app.post('/auth/refresh', (req: Request, res: Response) => {
+      User.refresh(req, res);
     });
   }
 };
