@@ -21,7 +21,7 @@ export class Deck {
     let firstCard = {};
 
     for (let i = 0; i < this._deck.length; i++) {
-      if (this._deck[0].face === 'one' 
+      if (this._deck[0].face === 'one'
         || this._deck[0].face === 'two'
         || this._deck[0].face === 'three'
         || this._deck[0].face === 'four'

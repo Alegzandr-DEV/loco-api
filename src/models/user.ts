@@ -9,7 +9,7 @@ const schema = new Schema<User>({
   refreshToken: { type: String, default: '' },
   roles: { type: Array, default: [] },
   username: { type: String, minlength: 4, unique: true, trim: true, required: true }
-});
+}, { timestamps: true });
 
 schema.pre('save', async function(next) {
   if(this.isModified('password'))

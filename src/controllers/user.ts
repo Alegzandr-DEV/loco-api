@@ -52,6 +52,8 @@ export const User = {
 
       if (user)
         UserModel.findById(user.id, (err: Error, data: any) => {
+          if (err) return res.status(500).json({ success: false });;
+          
           if (data.refreshToken === token)
             if (user) return res.status(200).json({ success: true, accessToken: signAccess(data) });
 
