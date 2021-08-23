@@ -43,7 +43,7 @@ export function list(model: Model<any>) {
   return (req: Request, res: Response) => {
     model.find({}, (err: Error, data: any) => {
       if (err) return res.status(500).json({ success: false });;
-      return res.json(data);
+      return res.status(200).json(data);
     });
   }
 }

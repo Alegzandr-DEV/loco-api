@@ -5,6 +5,7 @@ import helmet from 'helmet';
 import { createServer } from 'http';
 import { Server, Socket } from 'socket.io';
 import { connect } from 'mongoose';
+import cookieParser from 'cookie-parser';
 import * as routes from './routes';
 
 dotenv.config();
@@ -19,11 +20,11 @@ const io = new Server(httpServer, {
   }
 });
 
-app.use(cors({ origin: 'http://localhost:3000', optionsSuccessStatus: 200 }));
+app.use(cors({ origin: 'http://localhost:3000', optionsSuccessStatus: 200, credentials: true }));
 app.use(helmet());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
+app.use(cookieParser());
 connect('mongodb://' + process.env.DB_HOST + ':' + process.env.DB_PORT + '/' + process.env.DB_DATABASE, {
   useNewUrlParser: true,
   useUnifiedTopology: true,

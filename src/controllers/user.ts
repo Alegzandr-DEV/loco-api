@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import dotenv from 'dotenv';
 import * as jwt from 'jsonwebtoken';
 import { UserModel } from '../models/user';
-import { create, get, update, remove, list, compare, signAccess, signRefresh } from '../utils';
+import { create, get, update, remove, list, compare, signAccess, signRefresh, dateWithMonthsDelay } from '../utils';
 
 dotenv.config();
 
@@ -15,7 +15,7 @@ export const User = {
   delete: remove(UserModel),
   list: list(UserModel),
 
-  login: (req: Request, res: Response) => {
+  signIn: (req: Request, res: Response) => {
     if (!req.body || !req.body.password) return res.status(500).json({ success: false });;
 
     let userData: { username?: string, email?: string } = { username: req.body.username };
@@ -26,7 +26,7 @@ export const User = {
 
     UserModel.findOne(userData, (err: Error, data: any) => {
       if (err || !data)
-        return res.status(500).json({ success: false });;
+        return res.status(500).json({ success: false });
       if (compare(req.body.password, data.password))  {
         const accessToken = signAccess(data);
         const refreshToken = signRefresh(data);
@@ -34,31 +34,19 @@ export const User = {
         data.refreshToken = refreshToken;
         data.save();
 
-        return res.status(200).json({ success: true, accessToken: accessToken, refreshToken: refreshToken });
+        return res.status(200)
+          .cookie('accessCookie', accessToken, {
+            secure: process.env.COOKIE_SECURE === 'true',
+            httpOnly: true,
+            expires: dateWithMonthsDelay(6)
+          }).cookie('refreshCookie', refreshToken, {
+            secure: process.env.COOKIE_SECURE === 'true',
+            httpOnly: true,
+            expires: dateWithMonthsDelay(6)
+          }).json({ success: true });
       }
 
       return res.status(401).json({ success: false, message: 'Invalid password' });
-    });
-  },
-
-  refresh: (req: Request, res: Response) => {
-    const header = req.headers.authorization;
-    const token = header && header.split(' ')[1];
-
-    if (!token) return res.status(401).json(unauthorized);
-
-    jwt.verify(token, String(process.env.SECRET_REFRESH), {}, (err, user) => {
-      if (err) return res.status(401).json(unauthorized);
-
-      if (user)
-        UserModel.findById(user.id, (err: Error, data: any) => {
-          if (err) return res.status(500).json({ success: false });;
-          
-          if (data.refreshToken === token)
-            if (user) return res.status(200).json({ success: true, accessToken: signAccess(data) });
-
-          return res.status(401).json(unauthorized);
-        });
     });
   }
 }

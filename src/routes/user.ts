@@ -24,12 +24,8 @@ export const user = {
       User.list(req, res);
     });
 
-    app.post('/auth/login', (req: Request, res: Response) => {
-      User.login(req, res);
-    });
-
-    app.post('/auth/refresh', (req: Request, res: Response) => {
-      User.refresh(req, res);
+    app.post('/auth/signin', (req: Request, res: Response) => {
+      User.signIn(req, res);
     });
   }
 };
