@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 import dotenv from 'dotenv';
-import * as jwt from 'jsonwebtoken';
 import { UserModel } from '../models/user';
 import { create, get, update, remove, list, compare, signAccess, signRefresh, dateWithMonthsDelay } from '../utils';
 
