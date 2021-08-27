@@ -1,5 +1,5 @@
 import { shuffle } from '../utils';
-import { createDeck } from './createDeck';
+import { createDeck } from './create-deck';
 import { Characteristics } from './types';
 
 export class Deck {

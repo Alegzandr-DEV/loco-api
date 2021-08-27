@@ -5,8 +5,6 @@ import { create, get, update, remove, list, compare, signAccess, signRefresh, da
 
 dotenv.config();
 
-const unauthorized = { success: false, message: 'Unauthorized' };
-
 export const User = {
   create: create(UserModel),
   get: get(UserModel),

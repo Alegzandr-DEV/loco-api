@@ -45,7 +45,7 @@ export function auth(req: Request, res: Response, next: NextFunction) {
 
       if (refreshRequest === 401) return res.status(401).json(unauthorized);
       if (refreshRequest === 500) return res.status(500).json({ success: false });
-      return res.status(200).cookie('accessCookie', signAccess(refreshRequest), {
+      return res.status(418).cookie('accessCookie', signAccess(refreshRequest), {
         secure: process.env.COOKIE_SECURE === 'true',
         httpOnly: true,
         expires: dateWithMonthsDelay(6)
