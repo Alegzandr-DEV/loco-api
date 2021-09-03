@@ -1,7 +1,18 @@
 import { Request, Response } from 'express';
 import dotenv from 'dotenv';
-import { UserModel } from '../models/user';
-import { create, get, update, remove, list, compare, signAccess, signRefresh, dateWithMonthsDelay } from '../utils';
+import { UserModel } from '../models';
+import { 
+  create, 
+  get, 
+  update, 
+  remove, 
+  list, 
+  compare, 
+  signAccess, 
+  signRefresh, 
+  dateWithMonthsDelay,
+  decodeAccess 
+} from '../utils';
 
 dotenv.config();
 
@@ -45,5 +56,9 @@ export const User = {
 
       return res.status(401).json({ success: false, message: 'Invalid password' });
     });
+  },
+
+  me: (req: Request, res: Response) => {
+    return res.status(200).json(decodeAccess(req.cookies.accessCookie));
   }
 }

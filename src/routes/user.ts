@@ -8,7 +8,7 @@ export const user = {
       User.get(req, res);
     });
 
-    app.post('/users', (req: Request, res: Response) => {
+    app.post('/auth/register', (req: Request, res: Response) => {
       User.create(req, res);
     });
 
@@ -20,12 +20,16 @@ export const user = {
       User.delete(req, res);
     });
 
-    app.get('/users', auth, (req: Request, res: Response) => {
+    app.get('/users/', auth, (req: Request, res: Response) => {
       User.list(req, res);
     });
 
     app.post('/auth/signin', (req: Request, res: Response) => {
       User.signIn(req, res);
+    });
+
+    app.post('/users', auth, (req: Request, res: Response) => {
+      User.me(req, res);
     });
   }
 };

@@ -7,7 +7,7 @@ const schema = new Schema<User>({
   email: { type: String, unique: true, trim: true, required: true },
   password: { type: String, minlength: 8, trim: true, required: true },
   refreshToken: { type: String, default: '' },
-  roles: { type: Array, default: [] },
+  roles: { type: Array, default: ['user'] },
   username: { type: String, minlength: 4, unique: true, trim: true, required: true }
 }, { timestamps: true });
 

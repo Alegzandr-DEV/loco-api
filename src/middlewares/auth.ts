@@ -49,7 +49,7 @@ export function auth(req: Request, res: Response, next: NextFunction) {
         secure: process.env.COOKIE_SECURE === 'true',
         httpOnly: true,
         expires: dateWithMonthsDelay(6)
-      }).json({ success: true });
+      }).json({ success: true, message: 'accessCookie renewed' });
     }
 
     req.user = user;

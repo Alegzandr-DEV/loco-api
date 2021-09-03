@@ -29,3 +29,12 @@ export function signRefresh(user: any) {
     return error;
   }
 }
+
+export function decodeAccess(token: any) {
+  try {
+    const secretKey = createHmac('sha256', String(process.env.SECRET_ACCESS)).digest('hex');
+    return jwt.verify(token, secretKey);
+  } catch (error) {
+    return error;
+  }
+}
