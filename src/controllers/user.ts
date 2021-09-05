@@ -72,6 +72,6 @@ export const User = {
       secure: process.env.COOKIE_SECURE === 'true',
       httpOnly: true,
       expires: new Date()
-    });
+    }).json({ success: true, message: 'Successfully signed out' });
   }
 }
