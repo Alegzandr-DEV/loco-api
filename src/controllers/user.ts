@@ -60,5 +60,18 @@ export const User = {
 
   me: (req: Request, res: Response) => {
     return res.status(200).json(decodeAccess(req.cookies.accessCookie));
+  },
+
+  signOut: (req: Request, res: Response) => {
+    return res.status(200)
+      .cookie('accessCookie', '', {
+      secure: process.env.COOKIE_SECURE === 'true',
+      httpOnly: true,
+      expires: new Date()
+    }).cookie('refreshCookie', '', {
+      secure: process.env.COOKIE_SECURE === 'true',
+      httpOnly: true,
+      expires: new Date()
+    });
   }
 }
