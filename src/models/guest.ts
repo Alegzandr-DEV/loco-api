@@ -2,11 +2,13 @@ import { Schema, model } from 'mongoose';
 import { Guest } from './types';
 import { generateUsername } from '../utils';
 
+// Need to add expire time
 const schema = new Schema<Guest>({
   avatar: { type: String, required: true },
-  roles: { type: Array, default: ['guest'] },
-  username: { type: String, minlength: 4, unique: true, trim: true, required: true }
+  username: { type: String }
 }, { timestamps: true });
+
+//schema.index({ createdAt: 1 }, { expiresAfterSeconds: 86400 });
 
 schema.pre('save', async function(next) {
   this.username = generateUsername();

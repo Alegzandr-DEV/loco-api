@@ -51,7 +51,7 @@ export const User = {
             secure: process.env.COOKIE_SECURE === 'true',
             httpOnly: true,
             expires: dateWithMonthsDelay(6)
-          }).json({ success: true });
+          }).json({ success: true, message: 'Successfully signed in' });
       }
 
       return res.status(401).json({ success: false, message: 'Invalid password' });

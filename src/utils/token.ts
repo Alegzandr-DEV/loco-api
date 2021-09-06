@@ -38,3 +38,16 @@ export function decodeAccess(token: any) {
     return error;
   }
 }
+
+export function signGuest(user: any) {
+  try {
+    const secretKey = createHmac('sha256', String(process.env.SECRET_ACCESS)).digest('hex');
+    return jwt.sign({
+      id: user._id,
+      avatar: user.avatar,
+      username: user.username
+    }, secretKey, { expiresIn: 86400 });
+  } catch (error) {
+    return error;
+  }
+}
